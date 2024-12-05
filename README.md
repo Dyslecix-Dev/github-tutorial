@@ -9,18 +9,23 @@ This is a tutorial for Github.
 ### Terminology
 
 - Branch - A separate line of development that allows a user to work or fix features without affect the main codebase.
-- Centralized Workflow - ???
-- Feature Branch Workflow - ???
-- Forking - ???
-- Gitflow Workflow - ???
-- HEAD - ???
-- Hook - ???
-- Main - ???
-- Pull Request - ???
-- Repository - ???
-- Tag - ???
-- Version Control - ???
-- Working Tree - ???
+- Centralized Workflow - A Git collaboration model where all developers work directly on a single branch (typically main).
+- Feature Branch Workflow - A Git collaboration model where a new branch is created for each feature or task, then merged back into the main branch when completed.
+- Forking - Creating a copy of someone else's repository, which allows changes to be made without affecting the original repository (typically used in open-source collaboration).
+- Gitflow Workflow - A Git collaboration model used for large projects where each branch has a different purpose:
+  - main is used for release versions.
+  - develop for integration of features.
+  - feature/\* for new features.
+  - release/\* for preparing releases.
+  - hotfix/\* for critical bug fixes.
+- HEAD - A reference to the most recent commit in the current branch.
+- Hook - Scripts automatically triggered to run during specific events within a repository (e.g. before committing or after pushing).
+- Main - The default primary branch in a repository.
+- Pull Request - A method to propose changes from one branch to another.
+- Repository - A collection of commits, branches, and tags to identify commits.
+- Tag - A reference to a specific commit.
+- Version Control - A system that tracks and manages changes to files over time.
+- Working Tree - The current state of files in a user's local directory including committed and non-committed changes.
 
 ### Git Commands
 
