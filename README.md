@@ -89,3 +89,47 @@ console.log("Hello World");
 - [x] This item is complete
 - [ ] This item is not complete
 ```
+
+### GitHub Pages
+
+#### Enable GitHub Pages
+
+1. In your GitHub repository, click **Settings** in the navbar.
+2. In the **Code and automation** section in the sidebar, click **Pages**.
+3. Select **Deploy from a branch** in the dropdown below **Source**.
+4. Select **main** in the dropdown below **Branch**.
+5. In the lower right corner click **Save**.
+
+#### Configure your site
+
+1. Create a \_config.yml file.
+2. Add a theme (the overall look and layout of your site), title (default title of the website), author (the site-wide default author name), and description (a description of the website for SEO metadata and in site headers[e.g. website logo, navigation menu, call-to-action buttons, etc.]).
+
+#### Customize your homepage
+
+1. Create an index.md file.
+2. Add a title using YAML frontmatter:
+
+```yaml
+---
+title: Welcome to my site
+---
+```
+
+#### Create a blog post
+
+1. Create an md file using the following format: **\_posts/YYYY-MM-DD-title.md** (e.g. \_posts/2024-12-05-first-blog-post.md).
+2. Add the title and date using YAML frontmatter:
+
+```yaml
+---
+title: First blog post
+date: 2024-12-05
+---
+```
+
+#### Viewing the site
+
+1. In your GitHub repository, click **Settings** in the navbar.
+2. In the **Code and automation** section in the sidebar, click **Pages**.
+3. Click **Visit site**.
