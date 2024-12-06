@@ -9,6 +9,7 @@ This is a tutorial for Github.
 - Branch - A parallel version of a repository. By default every repository has one branch named main. Creating additional branches copies the main branch and allows the user to make any changes without disrupting the main branch. Normally, branches are used to work on specific features.
 - GitHub - A collaboration platform that uses Git for versioning.
 - Merge - Adds the changes in a pull request and branch into the main branch.
+- Merge Conflict - It occurs when changes are made to the same part(s) of the same file(s) on two different branches.
 - Pull Request - Shows the changes in a branch to other people and allows them to accept, reject, or suggest additional changes to your branch.
 - Pull Request Review - Examining another contributor's changes and giving them feedback.
 - Repository - A project containing files and folders. A repository tracks versions of these files and folders.
@@ -31,9 +32,9 @@ This is a tutorial for Github.
 2. Click **Create new file**.
 3. In the **Name your file...** field, type a name for the file you want to create.
 4. In the **Enter file contents here** area, add the content for your file.
-5. In the top right corner, click **Commit changes...**.
+5. In the top right, click **Commit changes...**.
 6. In the **Commit message** field, type a name for the commit.
-7. In the bottom right corner, click **Commit changes**.
+7. In the bottom right, click **Commit changes**.
 
 #### Creating a pull request
 
@@ -99,7 +100,7 @@ console.log("Hello World");
 2. In the **Code and automation** section in the left sidebar, click **Pages**.
 3. Select **Deploy from a branch** in the dropdown below **Source**.
 4. Select **main** in the dropdown below **Branch**.
-5. In the lower right corner click **Save**.
+5. In the lower right, click **Save**.
 
 #### Configure your site
 
@@ -173,3 +174,20 @@ See [Creating a pull request](#creating-a-pull-request)
 1. Below the suggested change, click **Commit suggestion**.
 2. In the **Commit title** field, type a name for the commit.
 3. Click **Commit changes**.
+
+### Resolve merge conflicts
+
+1. In your GitHub repository, click **Pull requests** in the navbar.
+2. Click the pull request you want to resolve the merge conflict in.
+3. Click **Resolve conflicts**.
+4. At the highlighted sections, modify the content.
+5. Remove the merge conflict markers:
+
+   ```git
+   <<<<<<< other-branch
+   =======
+   >>>>>>> main
+   ```
+
+6. In the top right, click **Mark as resolved**.
+7. In the top right, click **Commit merge**.
