@@ -8,12 +8,19 @@ This is a tutorial for Github.
 
 - Branch - A parallel version of a repository. By default every repository has one branch named main. Creating additional branches copies the main branch and allows the user to make any changes without disrupting the main branch. Normally, branches are used to work on specific features.
 - GitHub - A collaboration platform that uses Git for versioning.
+- GitHub Flow - A lightweight, branch-based workflow for projects with regular deployments.
 - Merge - Adds the changes in a pull request and branch into the main branch.
 - Merge Conflict - It occurs when changes are made to the same part(s) of the same file(s) on two different branches.
+- Protected Branch - Branches that are protected from force pushes or accidental deletion. The main branch is protected by default.
 - Pull Request - Shows the changes in a branch to other people and allows them to accept, reject, or suggest additional changes to your branch.
 - Pull Request Review - Examining another contributor's changes and giving them feedback.
 - Repository - A project containing files and folders. A repository tracks versions of these files and folders.
+- Semantic Versioning - A formal convention for specifying compatibility using a three-part version number: major version, minor version, and patch (e.g. 1.0.0).
+  - A backward compatible fix (i.e. patch release) increments the third digit (e.g. 1.0.1).
+  - A backward compatible new feature (i.e. minor release) increments the middle digit and resets the third digit (e.g. 1.1.0).
+  - A breaking update (i.e. major release) increments the first digit, and resets the middle and last digits (e.g. 2.0.0).
 - Task List - A list of checkboxes that is useful for tracking issues and pull requests. If it is included in the body of an issue or pull request, a progress indicator will appear.
+- Version - A different iteration of updated software (e.g. operating systems, apps, dependencies, etc.).
 
 ## Notes
 
@@ -21,7 +28,7 @@ This is a tutorial for Github.
 
 #### Creating a branch
 
-1. In your GitHub repository, click **<> Code** in the navbar.
+1. In your GitHub repository, click **Code** in the navbar.
 2. Click on the branch dropdown.
 3. In the field, type a name for the branch you want to create.
 4. Click **Create branch <new_branch_name> from <original_branch_name>**.
@@ -191,3 +198,50 @@ See [Creating a pull request](#creating-a-pull-request)
 
 6. In the top right, click **Mark as resolved**.
 7. In the top right, click **Commit merge**.
+
+### Release-based workflow
+
+#### Create a beta release
+
+1. In your GitHub repository, click **Code** in the navbar.
+2. In the right sidebar, click **Create a new release** below **Releases**.
+3. Click the **Choose a tag** dropdown.
+4. In the **Find or create a new tag** field, type a version number for this release (e.g. v0.0.9).
+5. Click **Create new tag**.
+6. Click the **Target** dropdown and select the branch you want to add the tag to.
+7. In the **Release title** field, type a title for this release (v0.0.9).
+8. Check the **Set as a pre-release** checkbox to indicate this release is a beta version.
+9. Click **Publish release**.
+
+#### Add a new feature to the release branch
+
+See [Committing a file](#committing-a-file), [Creating a pull request](#creating-a-pull-request), and [Merging a pull request](#merging-a-pull-request).
+
+#### Generate release notes
+
+1. In your GitHub repository, click **Code** in the navbar.
+2. In the right sidebar, click **Releases**.
+3. Click **Draft a new release**.
+4. Click the **Choose a tag** dropdown.
+5. In the **Find or create a new tag** field, type a version number for this release.
+6. Click **Create new tag**.
+7. Click the **Target** dropdown, then select the branch you want to add the tag to and generate release notes for.
+8. Click **Generate release notes**.
+9. Release notes will be automatically generated. Feel free to edit any part of it.
+   - _Automatically generated release notes provide an automated alternative to manually writing release notes for GitHub releases. Additionally, a user cqn quickly generate an overview of the contents of a release, a list of merged pull requests, a list of contributors to the release, and a link to a full changelog. These release notes can also be customized after generation._
+10. Click the **Target** dropdown and select the main branch since this will be the branch to get the tag and release notes after merging.
+11. Click **Save draft**.
+
+#### Finalize the drafted release
+
+1. In your GitHub repository, click **Code** in the navbar.
+2. In the right sidebar, click **Releases**.
+3. Click the pencil icon for the draft release you want to release.
+4. Click the **Target** dropdown, then select the branch you want to release.
+5. Click **Publish release**.
+
+#### Commit a hotfix to the release
+
+Committing a hotfix would require three branches: main, a hotfix branch, and fix-bug branch. The fix-bug branch (can have any name to describe what is being fixed) would be merged into the hotfix branch, then the hotfix branch would be merged into the main branch.
+
+See [Committing a file](#committing-a-file), [Creating a pull request](#creating-a-pull-request), and [Merging a pull request](#merging-a-pull-request).
