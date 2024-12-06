@@ -10,6 +10,7 @@ This is a tutorial for Github.
 - GitHub - A collaboration platform that uses Git for versioning.
 - Merge - Adds the changes in a pull request and branch into the main branch.
 - Pull Request - Shows the changes in a branch to other people and allows them to accept, reject, or suggest additional changes to your branch.
+- Pull Request Review - Examining another contributor's changes and giving them feedback.
 - Repository - A project containing files and folders. A repository tracks versions of these files and folders.
 - Task List - A list of checkboxes that is useful for tracking issues and pull requests. If it is included in the body of an issue or pull request, a progress indicator will appear.
 
@@ -95,7 +96,7 @@ console.log("Hello World");
 #### Enable GitHub Pages
 
 1. In your GitHub repository, click **Settings** in the navbar.
-2. In the **Code and automation** section in the sidebar, click **Pages**.
+2. In the **Code and automation** section in the left sidebar, click **Pages**.
 3. Select **Deploy from a branch** in the dropdown below **Source**.
 4. Select **main** in the dropdown below **Branch**.
 5. In the lower right corner click **Save**.
@@ -118,7 +119,7 @@ title: Welcome to my site
 
 #### Create a blog post
 
-1. Create an md file using the following format: **\_posts/YYYY-MM-DD-title.md** (e.g. \_posts/2024-12-05-first-blog-post.md).
+1. Create a markdown file using the following format: **\_posts/YYYY-MM-DD-title.md** (e.g. \_posts/2024-12-05-first-blog-post.md).
 2. Add the title and date using YAML frontmatter:
 
 ```yaml
@@ -131,5 +132,44 @@ date: 2024-12-05
 #### Viewing the site
 
 1. In your GitHub repository, click **Settings** in the navbar.
-2. In the **Code and automation** section in the sidebar, click **Pages**.
+2. In the **Code and automation** section in the left sidebar, click **Pages**.
 3. Click **Visit site**.
+
+### Review pull requests
+
+#### Open a pull request
+
+See [Creating a pull request](#creating-a-pull-request)
+
+#### Assign yourself
+
+1. In your GitHub repository, click **Pull requests** in the navbar.
+2. Click the pull request you want to assign yourself to.
+3. In the right sidebar, click below **Assignees**.
+   - _Note that you can't assign yourself as a reviewer since you created the pull request._
+
+#### Leave a review
+
+1. In your GitHub repository, click **Pull requests** in the navbar.
+2. Click **Files changed** in the secondary navbar.
+3. Click **Review changes**.
+4. In the **Leave a comment** field, type a comment about the pull request.
+5. Select the **Comment** radio button.
+   - _Note that you can't select **Approve** or **Request changes** since you created the pull request._
+6. Click **Submit review**.
+
+#### Suggest changes
+
+1. In your GitHub repository, click **Pull requests** in the navbar.
+2. Click **Files changed** in the secondary navbar.
+3. Go to a file and hover your cursor over the line of code you want to suggest changes for.
+4. Click the blue plus icon.
+5. Click the **Add a suggestion, <Cmd+g>** icon to the right of **Preview**.
+6. Edit the suggestion.
+7. Click **Add a single comment**.
+
+#### Apply suggested changes
+
+1. Below the suggested change, click **Commit suggestion**.
+2. In the **Commit title** field, type a name for the commit.
+3. Click **Commit changes**.
