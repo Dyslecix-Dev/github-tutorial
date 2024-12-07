@@ -10,20 +10,25 @@ This is a tutorial for Github.
 - Codespace - A development environment that is hosted in the cloud. GitHub codespaces can be customized by committing configuration files to the repository (i.e. configuration-as-code), and are hosted by GitHub in a Docker container that runs on a virtual machine.
 - Dotfile - Files and folders on Unix-like systems starting with a period that control the configuration of applications and shells on your system.1
 - GitHub - A collaboration platform that uses Git for versioning.
+- GitHub Actions - A way to automate aspects of software workflow (e.g. testing, continuous deployment, code review, managing issues and pull requests, etc.).
 - GitHub Flow - A lightweight, branch-based workflow for projects with regular deployments.
+- Job - A set of steps in a workflow that execute on the same runner.
 - Merge - Adds the changes in a pull request and branch into the main branch.
 - Merge Conflict - It occurs when changes are made to the same part(s) of the same file(s) on two different branches.
 - Protected Branch - Branches that are protected from force pushes or accidental deletion. The main branch is protected by default.
 - Pull Request - Shows the changes in a branch to other people and allows them to accept, reject, or suggest additional changes to your branch.
 - Pull Request Review - Examining another contributor's changes and giving them feedback.
 - Repository - A project containing files and folders. A repository tracks versions of these files and folders.
+- Runner - A server that runs workflows when triggered.
 - Secure Hash Algorithm (SHA) - A reference to a specific object (e.g. a commit in GitHub).
 - Semantic Versioning - A formal convention for specifying compatibility using a three-part version number: major version, minor version, and patch (e.g. 1.0.0).
   - A backward compatible fix (i.e. patch release) increments the third digit (e.g. 1.0.1).
   - A backward compatible new feature (i.e. minor release) increments the middle digit and resets the third digit (e.g. 1.1.0).
   - A breaking update (i.e. major release) increments the first digit, and resets the middle and last digits (e.g. 2.0.0).
+- Step - When a workflow job is processed, steps run in order. Each step consists of either an executable shell script or a reference to a running action (An action with a lowercase "a" is a reusable unit of code).
 - Task List - A list of checkboxes that is useful for tracking issues and pull requests. If it is included in the body of an issue or pull request, a progress indicator will appear.
 - Version - A different iteration of updated software (e.g. operating systems, apps, dependencies, etc.).
+- Workflow - A configurable automated process that runs one or more jobs. Within GitHub they are special files in the `.github/workflows` directory that executed based on chosen events.
 
 ## Git commands
 
@@ -304,9 +309,9 @@ See [Committing a file](#committing-a-file), [Creating a pull request](#creating
 
    ```json
    {
-     // Name this configuration
+     // Names this configuration.
      "name": "Codespace for Skills!",
-     // This is the base codespace file images
+     // This is the base codespace file images.
      "image": "mcr.microsoft.com/vscode/devcontainers/universal:latest",
      "remoteUser": "codespace",
      "overrideCommand": false
@@ -344,3 +349,42 @@ See [Committing a file](#committing-a-file), [Creating a pull request](#creating
 6. In the terminal type `git commit -m "Your commit message"`.
 7. In the terminal type `git push`.
 8. In the terminal type `sl` for a surprise.
+
+### Hello GitHub Actions
+
+#### Create a workflow file
+
+1. Create a `.github/workflows` directory then navigate into the `workflows` directory.
+2. Click on the **Add file** dropdown.
+3. Click **Create new file**.
+4. In the **Name your file...** field, type a name for the YAML file you want to create.
+
+#### Add a job to your workflow file
+
+1. In `.github/workflows/your-workflow.yml` file, add the content for this file.
+
+   ```yml
+   # Names this workflow which will appear in the repository's Actions tab in the navbar.
+   name: Post welcome comment
+   # Indicates that this workflow will execute whenever someone opens a pull request in this repository.
+   on:
+     pull_request:
+       types: [opened]
+   # Gives this workflow permission to write pull requests.
+   permissions:
+     pull-requests: write
+   # Creates a job with a name that runs on an ubuntu runner, and has steps that uses the run shell command to use the GitHub CLI to post a comment on a pull request with environment variables.
+   jobs:
+     build:
+       name: Post welcome comment
+       runs-on: ubuntu-latest
+       steps:
+         - run: gh pr comment $PR_URL --body "Welcome to the repository!"
+           env:
+             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+             PR_URL: ${{ github.event.pull_request.html_url }}
+   ```
+
+2. In the top right, click **Commit changes...**.
+3. In the **Commit message** field, type a name for the commit.
+4. In the bottom right, click **Commit changes**.
