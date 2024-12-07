@@ -15,12 +15,17 @@ This is a tutorial for Github.
 - Pull Request - Shows the changes in a branch to other people and allows them to accept, reject, or suggest additional changes to your branch.
 - Pull Request Review - Examining another contributor's changes and giving them feedback.
 - Repository - A project containing files and folders. A repository tracks versions of these files and folders.
+- Secure Hash Algorithm (SHA) - A reference to a specific object (e.g. a commit in GitHub).
 - Semantic Versioning - A formal convention for specifying compatibility using a three-part version number: major version, minor version, and patch (e.g. 1.0.0).
   - A backward compatible fix (i.e. patch release) increments the third digit (e.g. 1.0.1).
   - A backward compatible new feature (i.e. minor release) increments the middle digit and resets the third digit (e.g. 1.1.0).
   - A breaking update (i.e. major release) increments the first digit, and resets the middle and last digits (e.g. 2.0.0).
 - Task List - A list of checkboxes that is useful for tracking issues and pull requests. If it is included in the body of an issue or pull request, a progress indicator will appear.
 - Version - A different iteration of updated software (e.g. operating systems, apps, dependencies, etc.).
+
+## Git commands
+
+- `git blame` - Displays the contents of a file, which lines were modified, and the author of those modifications.
 
 ## Notes
 
@@ -245,3 +250,25 @@ See [Committing a file](#committing-a-file), [Creating a pull request](#creating
 Committing a hotfix would require three branches: main, a hotfix branch, and fix-bug branch. The fix-bug branch (can have any name to describe what is being fixed) would be merged into the hotfix branch, then the hotfix branch would be merged into the main branch.
 
 See [Committing a file](#committing-a-file), [Creating a pull request](#creating-a-pull-request), and [Merging a pull request](#merging-a-pull-request).
+
+### Navigating through a repository
+
+#### Resolve duplicate issues
+
+1. In your GitHub repository, click **Issues** in the navbar.
+2. Click the issue you want to resolve.
+3. In the **Add your comment here...** field, type `Duplicate of #N` where N is the reference number to the duplicate issue.
+   - _You can find an issue's reference number underneath its name._
+4. Click **Close with comment**.
+
+#### Find a commit in history
+
+1. In your GitHub repository, click **Code** in the navbar.
+2. Click the file you want to see the commit history of.
+3. In the top left, click **Blame** which is to the right of **Preview**.
+4. Click the commit message you want to see more information of.
+5. In the top right next to **commit**, click the button to copy the commit message's SHA.
+6. In your GitHub repository, click **Issues** in the navbar.
+7. Click the issue you want to add the SHA to.
+8. In the **Add your comment here...** field, paste the SHA.
+9. Click **Comment**.
