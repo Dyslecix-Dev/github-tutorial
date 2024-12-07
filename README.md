@@ -7,6 +7,8 @@ This is a tutorial for Github.
 ## Terminology
 
 - Branch - A parallel version of a repository. By default every repository has one branch named main. Creating additional branches copies the main branch and allows the user to make any changes without disrupting the main branch. Normally, branches are used to work on specific features.
+- Codespace - A development environment that is hosted in the cloud. GitHub codespaces can be customized by committing configuration files to the repository (i.e. configuration-as-code), and are hosted by GitHub in a Docker container that runs on a virtual machine.
+- Dotfile - Files and folders on Unix-like systems starting with a period that control the configuration of applications and shells on your system.1
 - GitHub - A collaboration platform that uses Git for versioning.
 - GitHub Flow - A lightweight, branch-based workflow for projects with regular deployments.
 - Merge - Adds the changes in a pull request and branch into the main branch.
@@ -25,7 +27,12 @@ This is a tutorial for Github.
 
 ## Git commands
 
+- `git add` - Adds changes to files to the staging area.
 - `git blame` - Displays the contents of a file, which lines were modified, and the author of those modifications.
+- `git commit` - Creates a commit of the staged changes.
+  - `-a` - A flag that stages all files that have been modified and deleted, but not newly created files.
+  - `-m` - A flag that uses the following text as the commit message.
+- `git push` - Transfers commits from your local repository to a remote repository.
 
 ## Notes
 
@@ -272,3 +279,68 @@ See [Committing a file](#committing-a-file), [Creating a pull request](#creating
 7. Click the issue you want to add the SHA to.
 8. In the **Add your comment here...** field, paste the SHA.
 9. Click **Comment**.
+
+### Code with codespaces
+
+- _Note that any of the git commands used in the codespace are similar to what would be used in VS Code._
+
+#### Start a codespace
+
+1. Click the green **Code** button.
+2. Click the **Codespaces** tab.
+3. Click **Create codespace on main** or the plus icon.
+
+#### Push code to your repository from the codespace
+
+1. After editing files, in the terminal type `git commit -a -m "Your commit message"` to create a commit.
+2. In the terminal type `git push` to transfer commits from your local repository to a remote repository.
+
+#### Add custom file images to your codespace
+
+1. In your GitHub repository, click on the **Add file** dropdown.
+2. Click **Create new file**.
+3. In the **Name your file...** field, type `.devcontainer/devcontainer.json`.
+4. In the devcontainer.json file add a name, image, remoteUser, and overrideCommand:
+
+   ```json
+   {
+     // Name this configuration
+     "name": "Codespace for Skills!",
+     // This is the base codespace file images
+     "image": "mcr.microsoft.com/vscode/devcontainers/universal:latest",
+     "remoteUser": "codespace",
+     "overrideCommand": false
+   }
+   ```
+
+5. Click **Commit changes...**.
+6. In the **Commit message** field, type a name for the commit.
+7. In the bottom right, click **Commit changes**.
+
+#### Enable a dotfile for your codespace
+
+1. Click your profile picture.
+2. Click **Settings**.
+3. In the **Code, planning, and automation** section in the left sidebar, click **Codespaces**.
+4. In the **Dotfiles** section, check the **Automatically install dotfiles** checkbox.
+5. Click on the **Select repository** dropdown, and select the repository you want to automatically install dotfiles for in its codespace.
+
+#### Add a dotfile to your repository
+
+1. Click the green **Code** button.
+2. Click the **Codespaces** tab.
+3. Click **Create codespace on main** or the plus icon.
+4. Inside the codespace, create a setup.sh file and add the following:
+
+   ```sh
+   #!/bin/bash
+
+   sudo apt-get update
+   sudo apt-get install sl
+   echo "export PATH=\$PATH:/usr/games" >> ~/.bashrc
+   ```
+
+5. In the terminal type `git add setup.sh --chmod=+x`.
+6. In the terminal type `git commit -m "Your commit message"`.
+7. In the terminal type `git push`.
+8. In the terminal type `sl` for a surprise.
