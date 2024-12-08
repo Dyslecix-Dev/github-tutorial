@@ -8,6 +8,7 @@ This is a tutorial for Github.
 
 - Branch - A parallel version of a repository. By default every repository has one branch named main. Creating additional branches copies the main branch and allows the user to make any changes without disrupting the main branch. Normally, branches are used to work on specific features.
 - Codespace - A development environment that is hosted in the cloud. GitHub codespaces can be customized by committing configuration files to the repository (i.e. configuration-as-code), and are hosted by GitHub in a Docker container that runs on a virtual machine.
+- Continuous Integration - A software development practice where developers merging code triggers automated builds and tests.
 - Dotfile - Files and folders on Unix-like systems starting with a period that control the configuration of applications and shells on your system.1
 - GitHub - A collaboration platform that uses Git for versioning.
 - GitHub Actions - A way to automate aspects of software workflow (e.g. testing, continuous deployment, code review, managing issues and pull requests, etc.).
@@ -361,7 +362,7 @@ See [Committing a file](#committing-a-file), [Creating a pull request](#creating
 
 #### Add a job to your workflow file
 
-1. In `.github/workflows/your-workflow.yml` file, add the content for this file.
+1. In `.github/workflows/your-workflow.yml` file, add the content for this file. Below is an example.
 
    ```yml
    # Names this workflow which will appear in the repository's Actions tab in the navbar.
@@ -388,3 +389,103 @@ See [Committing a file](#committing-a-file), [Creating a pull request](#creating
 2. In the top right, click **Commit changes...**.
 3. In the **Commit message** field, type a name for the commit.
 4. In the bottom right, click **Commit changes**.
+
+### Test with Actions
+
+#### Add a test workflow
+
+1. In your GitHub repository, click **Actions** in the navbar.
+2. In the top right of the left sidebar, click **New workflow**.
+3. Within **Simple workflow**, click **Configure**.
+4. In the **Name your file...** field, type `ci.yml`.
+5. Edit parts of the file to run a test. Below is an example.
+
+   ```yml
+   name: CI
+
+   # Controls when the workflow will run
+   on:
+     # Triggers the workflow on push or pull request events but only for the "main" branch
+     push:
+       branches: ["main"]
+     pull_request:
+       branches: ["main"]
+
+     # Allows you to run this workflow manually from the Actions tab
+     workflow_dispatch:
+
+   # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+   jobs:
+     # This workflow contains a single job called "build"
+     build:
+       # The type of runner that the job will run on
+       runs-on: ubuntu-latest
+
+       # Steps represent a sequence of tasks that will be executed as part of the job
+       steps:
+         # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+         - uses: actions/checkout@v4
+
+         - name: Run markdown lint
+           run: |
+             npm install remark-cli remark-preset-lint-consistent
+             npx remark . --use remark-preset-lint-consistent --frail
+   ```
+
+6. Click **Commit changes...**
+7. In the **Commit message** field, type a name for the commit.
+8. Select the **Create a new branch for this commit and start a pull request** radio button.
+9. Type `ci` in the field below.
+10. Click **Propose changes**.
+11. Click **Create pull request**.
+
+#### Fix a test
+
+1. In your GitHub repository, click **Actions** in the navbar.
+2. Under **All workflows**, click a workflow with a red X. A green check mark indicates a workflow succeeded.
+   - _If the checks do not appear or are stuck in progress, try refreshing the page, creating a commit on this branch (workflows are triggered on the push event), and/or edit the workflow file to ensure there are no syntax problems._
+
+#### Upload test reports
+
+1. Navigate to the workflow file.
+2. Click the pencil icon.
+3. Add the following to your file:
+
+   ```yml
+   name: CI
+   on:
+     push:
+       branches: ["main"]
+     pull_request:
+       branches: ["main"]
+     workflow_dispatch:
+   jobs:
+     build:
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v4
+
+         - name: Run markdown lint
+           # Added vsfile-reporter-json and outputs the results to a remark-lint-report.json file.
+           run: |
+             npm install remark-cli remark-preset-lint-consistent vfile-reporter-json
+             npx remark . --use remark-preset-lint-consistent --report vfile-reporter-json 2> remark-lint-report.json
+
+         # Uses the upload-artifact action to upload the remark-lint-report.json file.
+         - uses: actions/upload-artifact@v4
+           with:
+             name: remark-lint-report
+             path: remark-lint-report.json
+   ```
+
+#### Add branch protections
+
+1. In your GitHub repository, click **Settings** in the navbar.
+2. In the **Code and automation** section in the left sidebar, click **Branches**.
+3. Click **Add classic branch protection rule**.
+4. In the **Branch name pattern** field, type `main`.
+5. Check the **Require a pull request before merging** checkbox.
+6. Uncheck the **Require approvals** checkbox.
+7. Check the **Require status checks to pass before merging** checkbox.
+8. Within the gray box below, search for the build and test jobs you would like to check before merging.
+9. Click **Create**.
