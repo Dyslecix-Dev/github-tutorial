@@ -8,7 +8,9 @@ This is a tutorial for Github.
 
 - Branch - A parallel version of a repository. By default every repository has one branch named main. Creating additional branches copies the main branch and allows the user to make any changes without disrupting the main branch. Normally, branches are used to work on specific features.
 - Codespace - A development environment that is hosted in the cloud. GitHub codespaces can be customized by committing configuration files to the repository (i.e. configuration-as-code), and are hosted by GitHub in a Docker container that runs on a virtual machine.
-- Continuous Integration - A software development practice where developers merging code triggers automated builds and tests.
+- Continuous Delivery (CD) - The next phase of CI where the code is packaged into a release and stored somewhere (preferably in an artifact repository).
+- Continuous Deployment (CD) - The next phase of continuous delivery where the code is deployed.
+- Continuous Integration (CI) - A software development practice where developers merging tested code into a shared branch.
 - Dotfile - Files and folders on Unix-like systems starting with a period that control the configuration of applications and shells on your system.1
 - GitHub - A collaboration platform that uses Git for versioning.
 - GitHub Actions - A way to automate aspects of software workflow (e.g. testing, continuous deployment, code review, managing issues and pull requests, etc.).
@@ -489,3 +491,99 @@ See [Committing a file](#committing-a-file), [Creating a pull request](#creating
 7. Check the **Require status checks to pass before merging** checkbox.
 8. Within the gray box below, search for the build and test jobs you would like to check before merging.
 9. Click **Create**.
+
+### Publish packages
+
+#### Create a workflow file for publishing packages
+
+1. Create a `.github/workflows` directory then navigate into the `workflows` directory.
+2. Click on the **Add file** dropdown.
+3. Click **Create new file**.
+4. In the **Name your file...** field, type `publish.yml` and add the following:
+
+   ```yml
+   name: Publish to Docker
+   on:
+     push:
+       branches:
+         - main
+   permissions:
+     packages: write
+     contents: read
+   jobs:
+     publish:
+       runs-on: ubuntu-latest
+       steps:
+         - name: Checkout
+           uses: actions/checkout@v4
+         - name: Docker meta
+           id: meta
+           uses: docker/metadata-action@v5
+           with:
+             # Replace YOUR_USERNAME with your GitHub username, and ensure this is unique.
+             images: ghcr.io/YOUR_USERNAME/publish-packages/game
+             tags: type=sha
+         - name: Login to GHCR
+           uses: docker/login-action@v3
+           with:
+             registry: ghcr.io
+             username: ${{ github.repository_owner }}
+             password: ${{ secrets.GITHUB_TOKEN }}
+         - name: Build container
+           uses: docker/build-push-action@v5
+           with:
+             context: .
+             push: true
+             tags: ${{ steps.meta.outputs.tags }}
+   ```
+
+5. In the top right, click **Commit changes...**.
+6. In the **Commit message** field, type a name for the commit.
+7. In the bottom right, click **Commit changes**.
+
+#### Add a Dockerfile
+
+1. Click on the **Add file** dropdown.
+2. Click **Create new file**.
+3. In the **Name your file...** field, type `Dockerfile` and add the following:
+
+   ```dockerfile
+   FROM nginx:1.24-alpine
+   COPY . /usr/share/nginx/html
+   ```
+
+4. In the top right, click **Commit changes...**.
+5. In the **Commit message** field, type a name for the commit.
+6. In the bottom right, click **Commit changes**.
+
+#### Connect to Docker Desktop using a personal access token
+
+1. Click your profile picture.
+2. Click **Settings**.
+3. Click **Developer settings**.
+4. Click the **Personal access tokens** dropdown.
+5. Click **Tokens (classic)**.
+6. Click the **Generate new token** dropdown.
+7. Click **Generate new token (classic)**.
+8. In the **Note** field, type a name for your token.
+9. Check the **repo** checkbox.
+10. Check the **write:packages** checkbox.
+11. Click **Generate token**.
+12. Click the button to copy your token.
+13. In a Git Bash terminal, type `docker login ghcr.io -u YOUR_USERNAME`.
+14. In the Git Bash terminal, paste your token as the password.
+    - _You should see `Login Succeeded` in the terminal if it was successful._
+
+#### Pull your Docker image
+
+1. In your GitHub repository, click **Code** in the navbar.
+2. In the right sidebar, click the package you want to pull an image from below **Packages**.
+3. Click the button to copy the docker pull command (e.g. `docker pull ghcr.io/your-username/publish-packages/game:sha-8f11e5d`).
+4. In a Git Bash terminal, paste your docker pull command.
+   - _You should see `Status: Downloaded newer image for...` if it was successful._
+
+#### Run your Docker image
+
+1. In a Git Bash terminal, type `docker image ls`.
+2. In the Git Bash terminal, type `docker run -dp 8080:80 --rm YOUR_IMAGE_NAME:TAG` where YOUR_IMAGE_NAME is listed under `REPOSITORY` and TAG is listed under `TAG`.
+   - _You should see a hash value if it was successful._
