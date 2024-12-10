@@ -11,6 +11,8 @@ This is a tutorial for Github.
 - Continuous Delivery (CD) - The next phase of CI where the code is packaged into a release and stored somewhere (preferably in an artifact repository).
 - Continuous Deployment (CD) - The next phase of continuous delivery where the code is deployed.
 - Continuous Integration (CI) - A software development practice where developers merging tested code into a shared branch.
+- Dependabot Alerts - Notify a user when their code depends on a package that is insecure.
+- Dependency Graph - A summary of the manifest and lock files stored and any dependencies that are submitted for the repository using the dependency submission API.
 - Dotfile - Files and folders on Unix-like systems starting with a period that control the configuration of applications and shells on your system.1
 - GitHub - A collaboration platform that uses Git for versioning.
 - GitHub Actions - A way to automate aspects of software workflow (e.g. testing, continuous deployment, code review, managing issues and pull requests, etc.).
@@ -754,3 +756,60 @@ _Note there is an error because the request-promise package has been deprecated 
 4. In the branch dropdown, select the branch you want to compare trigger the workflow in.
 5. Click the green **Run workflow** button.
 6. Refresh the page or click the workflow you triggered the action in to view the queue(s).
+
+### Secure your repository supply chain
+
+#### Verify that dependency graph is enabled
+
+_Note that a dependency graph is enabled on new public repositories by default. It is is not enabled, follow the steps below._
+
+1. In your GitHub repository, click **Settings** in the navbar.
+2. In the **Security** section in the left sidebar, click **Code Security**.
+3. Next to **Dependency graph**, click **Enable**.
+
+#### Add a new dependency and view your dependency graph
+
+1. Navigate to the `package-lock.json` file and add the following:
+
+   ```json
+   ,
+    "follow-redirects": {
+      "version": "1.14.1",
+      "resolved": "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.1.tgz",
+      "integrity": "sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg=="
+    }
+   ```
+
+2. In your GitHub repository, click **Insights** in the navbar.
+3. Click **Dependency graph** in the left sidebar.
+4. Click the **Dependencies** tab and review all the dependencies.
+
+#### Enable and view Dependabot alerts
+
+1. In your GitHub repository, click **Settings** in the navbar.
+2. In the **Security** section in the left sidebar, click **Code Security**.
+3. In the **Dependabot** section next to **Dependabot alerts**, click **Enable**.
+4. After about 60 seconds, click **Security** in the navbar.
+5. In the **Vulnerability alerts** section in the left sidebar, click **Dependabot**.
+
+#### Enable and trigger Dependabot security updates
+
+1. In your GitHub repository, click **Settings** in the navbar.
+2. In the **Security** section in the left sidebar, click **Code Security**.
+3. In the **Dependabot** section next to **Dependabot security updates**, click **Enable**.
+4. After about 60 seconds, click **Pull requests** in the navbar to see any pull requests created by Dependabot to fix insecure packages.
+
+#### Enable and trigger Dependabot version updates
+
+1. In your GitHub repository, click **Settings** in the navbar.
+2. In the **Security** section in the left sidebar, click **Code Security**.
+3. In the **Dependabot** section next to **Dependabot version updates**, click **Configure**.
+4. In the dependabot.yml file, add the following:
+
+   ```yml
+   # Example that checks once a week for .NET packages and creates pull requests to update any that are out of date.
+   - package-ecosystem: "nuget"
+    directory: "/code/"
+    schedule:
+      interval: "weekly"
+   ```
