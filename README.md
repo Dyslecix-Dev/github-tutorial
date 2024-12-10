@@ -16,6 +16,7 @@ This is a tutorial for Github.
 - GitHub Actions - A way to automate aspects of software workflow (e.g. testing, continuous deployment, code review, managing issues and pull requests, etc.).
 - GitHub Flow - A lightweight, branch-based workflow for projects with regular deployments.
 - Job - A set of steps in a workflow that execute on the same runner.
+- Matrix Strategy - The use of variables in a single job to automatically create multiple job runs.
 - Merge - Adds the changes in a pull request and branch into the main branch.
 - Merge Conflict - It occurs when changes are made to the same part(s) of the same file(s) on two different branches.
 - Protected Branch - Branches that are protected from force pushes or accidental deletion. The main branch is protected by default.
@@ -37,9 +38,13 @@ This is a tutorial for Github.
 
 - `git add` - Adds changes to files to the staging area.
 - `git blame` - Displays the contents of a file, which lines were modified, and the author of those modifications.
+- `git clone` - Creates a copy of a repo in your local directory.
 - `git commit` - Creates a commit of the staged changes.
   - `-a` - A flag that stages all files that have been modified and deleted, but not newly created files.
   - `-m` - A flag that uses the following text as the commit message.
+- `git fetch` - Downloads changes in a remote repository.
+- `git merge` - Merges the changes from one branch into another branch.
+- `git pull` - Downloads changes in a remote repository and merges them into your local repository.
 - `git push` - Transfers commits from your local repository to a remote repository.
 
 ## Notes
@@ -587,3 +592,165 @@ See [Committing a file](#committing-a-file), [Creating a pull request](#creating
 1. In a Git Bash terminal, type `docker image ls`.
 2. In the Git Bash terminal, type `docker run -dp 8080:80 --rm YOUR_IMAGE_NAME:TAG` where YOUR_IMAGE_NAME is listed under `REPOSITORY` and TAG is listed under `TAG`.
    - _You should see a hash value if it was successful._
+
+### Write JavaScript actions
+
+_Note there is an error because the request-promise package has been deprecated since 2019._
+
+#### Configure your action
+
+1. In the terminal, type `npm install --save request request-promise @actions/core`.
+2. Create a `.github/actions` directory then navigate into the `actions` directory in VS Code.
+3. Create a new file called `action.yml` and add content. Below is an example.
+
+   ```yml
+   # Name of the action (required).
+   name: "my joke action"
+
+   # Summary of what the action does (required).
+   description: "use an external API to retrieve and display a joke"
+
+   # Specifies the data that subsequent actions can use later in the workflow after the action that defines these outputs has run (optional).
+   outputs:
+     joke-output:
+       description: The resulting joke from the icanhazdadjokes API
+
+   # The command to run when the action executes (required).
+   runs:
+     using: "node16"
+     main: "main.js"
+   ```
+
+#### Create the JavaScript files for your action
+
+1. Create a `joke.js` file in the `joke-action` directory and add content. Below is an example.
+
+   ```js
+   const request = require("request-promise");
+
+   const options = {
+     method: "GET",
+     uri: "https://icanhazdadjoke.com/",
+     headers: {
+       Accept: "application/json",
+       "User-Agent": "Writing JavaScript action GitHub Skills course.",
+     },
+     json: true,
+   };
+
+   async function getJoke() {
+     const res = await request(options);
+     return res.joke;
+   }
+
+   module.exports = getJoke;
+   ```
+
+2. Create a `main.js` file in the `joke-action` directory and add content. Below is an example.
+
+   ```js
+   const getJoke = require("./joke");
+   const core = require("@actions/core");
+
+   async function run() {
+     const joke = await getJoke();
+     console.log(joke);
+     core.setOutput("joke-output", joke);
+   }
+
+   run();
+   ```
+
+#### Add your action to the workflow file.
+
+1. Create a `.github/workflows/my-workflow.yml` file and add content. Below is an example.
+
+   ```yml
+   name: JS Actions
+
+   on:
+     issues:
+       types: [labeled]
+
+   jobs:
+     action:
+       if: ${{ !github.event.repository.is_template }}
+       runs-on: ubuntu-latest
+
+       # Uses the joke-action directory.
+       steps:
+         - uses: actions/checkout@v4
+         - name: ha-ha
+           uses: ./.github/actions/joke-action
+   ```
+
+### Reusable workflows
+
+#### Make a workflow reusable
+
+1. In your GitHub repository, click **Code** in the navbar.
+2. Create a `.github/workflows` directory then navigate into the `workflows` directory in VS Code.
+3. Create a YAML file and add content. Below is an example.
+
+   ```yml
+   name: Reusable Workflow
+
+   # Uses workflow_call for reusability across repos.
+   on:
+     workflow_call:
+       inputs:
+         node:
+           required: true
+           type: string
+
+   jobs:
+     build:
+       runs-on: ubuntu-latest
+
+       steps:
+         - uses: actions/checkout@v4
+
+         - name: Output the input value
+           run: |
+             echo "The node version to use is: ${{ inputs.node }}"
+   ```
+
+#### Add a job to call the reusable workflow
+
+1. In your GitHub repository, click **Code** in the navbar.
+2. Create a `.github/workflows` directory then navigate into the `workflows` directory in VS Code.
+3. Create a YAML file and add content. Below is an example.
+
+   ```yml
+   # Uses the reusable workflow contained in another workflow file.
+   call-reusable-workflow:
+     uses: ./.github/workflows/reusable-workflow.yml
+     with:
+       node: 14
+   ```
+
+#### Add a matrix strategy to your workflow
+
+1. In your GitHub repository, click **Code** in the navbar.
+2. Create a `.github/workflows` directory then navigate into the `workflows` directory in VS Code.
+3. Create a YAML file and add content. Below is an example.
+
+   ```yml
+   # Defines a matrix strategy with the strategy and matrix keywords. This will run 4 times for each node version, but can run multiple times if you also include an os.
+   call-reusable-workflow:
+     strategy:
+       matrix:
+         nodeversion: [14, 16, 18, 20]
+     uses: ./.github/workflows/reusable-workflow.yml
+     with:
+       node: ${{ matrix.nodeversion }}
+   ```
+
+#### Trigger your workflow and view the Actions logs
+
+1. In your GitHub repository, click **Actions** in the navbar.
+2. Click the workflow you want to trigger in the left sidebar under **All workflows**.
+3. Click **Run workflow**.
+4. In the branch dropdown, select the branch you want to compare trigger the workflow in.
+5. Click the green **Run workflow** button.
+6. Refresh the page or click the workflow you triggered the action in to view the queue(s).
