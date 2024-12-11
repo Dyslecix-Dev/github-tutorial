@@ -7,7 +7,10 @@ This is a tutorial for Github.
 ## Terminology
 
 - Branch - A parallel version of a repository. By default every repository has one branch named main. Creating additional branches copies the main branch and allows the user to make any changes without disrupting the main branch. Normally, branches are used to work on specific features.
+- Code Scanning - A capability that integrates security testing tools into the software development process using GitHub Actions.
+- CodeQL - A static analysis testing tool that helps identify security weaknesses (e.g. SQL injection, cross-site scripting, etc.).
 - Codespace - A development environment that is hosted in the cloud. GitHub codespaces can be customized by committing configuration files to the repository (i.e. configuration-as-code), and are hosted by GitHub in a Docker container that runs on a virtual machine.
+- Common Weakness Enumeration (CWE) - A category system for hardware and software weaknesses and vulnerabilities.
 - Continuous Delivery (CD) - The next phase of CI where the code is packaged into a release and stored somewhere (preferably in an artifact repository).
 - Continuous Deployment (CD) - The next phase of continuous delivery where the code is deployed.
 - Continuous Integration (CI) - A software development practice where developers merging tested code into a shared branch.
@@ -813,3 +816,41 @@ _Note that a dependency graph is enabled on new public repositories by default. 
     schedule:
       interval: "weekly"
    ```
+
+### Introduction to CodeQL
+
+#### Enable CodeQL
+
+1. In your GitHub repository, click **Settings** in the navbar.
+2. In the **Security** section in the left sidebar, click **Code security**.
+3. In the **Code scanning** section next to **CodeQL analysis**, click on the **Set up** dropdown.
+4. Click **Default**.
+5. Click **Enable CodeQL**.
+
+#### Review and triage CodeQL alerts
+
+1. In your GitHub repository, click **Actions** in the navbar.
+2. Under **All workflows**, click **CodeQL**.
+   - _A CodeQL Action takes about 4 minutes to execute._
+3. Once the CodeQL Action is complete, click **Security** in the navbar.
+4. In the **Vulnerability alerts** section in the left sidebar, click **Code scanning**.
+5. Click on the CodeQL alert you want create an issue for.
+6. In the top right, click **Create issue**.
+7. Click **Submit new issue**.
+8. Click **Issues** in the navbar to verify the issue was submitted.
+
+#### Dismiss an alert
+
+1. In your GitHub repository, click **Security** in the navbar.
+2. In the **Vulnerability alerts** section in the left sidebar, click **Code scanning**.
+3. Click on the CodeQL alert you want to dismiss.
+4. In the top right, click the **Dismiss alert** dropdown.
+5. Select a radio button that best matches your reason for dismissing the alert.
+6. Click the **Dismiss alert** button.
+   - _Note that you can reopen it by finding it under the **Closed** tab in **Code scanning**, clicking on the dismissed alert, and in the top right clicking **Reopen alert**._
+
+#### Prevent vulnerabilities in the pull request
+
+1. After proposing a change to a new branch (i.e. creating a pull request), you will see a check called **Code scanning/CodeQL**.
+2. If there is a vulnerability, the check will have a red X. From there you can click **Details**.
+3. Click **Show paths**.
