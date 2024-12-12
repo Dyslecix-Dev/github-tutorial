@@ -50,9 +50,13 @@ This is a tutorial for Github.
   - `-a` - A flag that stages all files that have been modified and deleted, but not newly created files.
   - `-m` - A flag that uses the following text as the commit message.
 - `git fetch` - Downloads changes in a remote repository.
+- `git log` - Displays previous commits in the current branch.
+  - `--all` - A flag that shows commits across all branches.
+  - `--stat` - A flat that displays statistics about changes in each commit (e.g. files and lines modified).
 - `git merge` - Merges the changes from one branch into another branch.
 - `git pull` - Downloads changes in a remote repository and merges them into your local repository.
 - `git push` - Transfers commits from your local repository to a remote repository.
+  - `--force` - A flag that forces the remote repository to match your local repository.
 - `git rm` - Removes a file from its repository.
 
 ## Notes
@@ -869,5 +873,15 @@ _Note that a dependency graph is enabled on new public repositories by default. 
 
 #### Removing a file from Git history using BFG Repo-Cleaner
 
-1.
+1. [Download Java](https://www.oracle.com/java/technologies/downloads/).
+2. [Download BFG Repo-Cleaner](https://rtyley.github.io/bfg-repo-cleaner/), and rename the downloaded file to `bfg.jar`.
+3. In the terminal, type `git log --stat --all -- file-you-are-looking-for`.
+4. In the terminal, type `java -jar "C:\Path\to\bfg.jar" "C:\Path\to\repository" --delete-files file-you-want-to-delete`.
+5. In the terminal type `git log --stat --all -- file-you-are-looking-for` to ensure the file(s) were deleted.
+6. In the terminal type `git push --force`.
+   - _The --force flag is being used since Git history was altered._
 
+#### Hiding sensitive data.
+
+1. Create a `.gitignore` file.
+2. Add the files with sensitive data you want to hide here.
