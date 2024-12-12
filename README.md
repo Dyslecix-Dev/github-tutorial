@@ -6,6 +6,7 @@ This is a tutorial for Github.
 
 ## Terminology
 
+- BFG Repo-Cleaner - A software that helps search through and alter a repository's history.
 - Branch - A parallel version of a repository. By default every repository has one branch named main. Creating additional branches copies the main branch and allows the user to make any changes without disrupting the main branch. Normally, branches are used to work on specific features.
 - Code Scanning - A capability that integrates security testing tools into the software development process using GitHub Actions.
 - CodeQL - A static analysis testing tool that helps identify security weaknesses (e.g. SQL injection, cross-site scripting, etc.).
@@ -20,6 +21,7 @@ This is a tutorial for Github.
 - GitHub - A collaboration platform that uses Git for versioning.
 - GitHub Actions - A way to automate aspects of software workflow (e.g. testing, continuous deployment, code review, managing issues and pull requests, etc.).
 - GitHub Flow - A lightweight, branch-based workflow for projects with regular deployments.
+- Head Commit - In Git, HEAD points to a branch or commit, so the head commit is the most recent commit in a repository's history.
 - Job - A set of steps in a workflow that execute on the same runner.
 - Matrix Strategy - The use of variables in a single job to automatically create multiple job runs.
 - Merge - Adds the changes in a pull request and branch into the main branch.
@@ -51,6 +53,7 @@ This is a tutorial for Github.
 - `git merge` - Merges the changes from one branch into another branch.
 - `git pull` - Downloads changes in a remote repository and merges them into your local repository.
 - `git push` - Transfers commits from your local repository to a remote repository.
+- `git rm` - Removes a file from its repository.
 
 ## Notes
 
@@ -854,3 +857,17 @@ _Note that a dependency graph is enabled on new public repositories by default. 
 1. After proposing a change to a new branch (i.e. creating a pull request), you will see a check called **Code scanning/CodeQL**.
 2. If there is a vulnerability, the check will have a red X. From there you can click **Details**.
 3. Click **Show paths**.
+
+### Change commit history
+
+#### Removing sensitive data
+
+1. In the terminal, clone the repository you need to remove sensitive data from using the `git clone` command.
+2. While you are in the repository, in the terminal, type `git rm .env` to remove the `.env` file.
+3. In the terminal, type `git commit -m "remove .env file"`.
+4. In the terminal, type `git push`.
+
+#### Removing a file from Git history using BFG Repo-Cleaner
+
+1.
+
