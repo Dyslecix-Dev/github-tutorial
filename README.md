@@ -771,7 +771,7 @@ _Note there is an error because the request-promise package has been deprecated 
 
 #### Verify that dependency graph is enabled
 
-_Note that a dependency graph is enabled on new public repositories by default. It is is not enabled, follow the steps below._
+_Note that a dependency graph is enabled on new public repositories by default. If it is not enabled, follow the steps below._
 
 1. In your GitHub repository, click **Settings** in the navbar.
 2. In the **Security** section in the left sidebar, click **Code Security**.
@@ -885,3 +885,36 @@ _Note that a dependency graph is enabled on new public repositories by default. 
 
 1. Create a `.gitignore` file.
 2. Add the files with sensitive data you want to hide here.
+
+### Introduction to secret scanning
+
+#### Enable secret scanning
+
+_Note that secret scanning is enabled on new public repositories by default. If it is not enabled, follow the steps below._
+
+1. In your GitHub repository, click **Settings** in the navbar.
+2. In the **Security** section in the left sidebar, click **Code Security**.
+3. Next to **Secret scanning**, click **Enable**.
+
+#### Review and close secret scanning alerts
+
+1. In your GitHub repository, click **Security** in the navbar.
+2. In the **Vulnerability alerts** section in the left sidebar, click **Secret scanning**.
+3. Click on the secret scanning alert you want to close.
+4. In the top right if **Verify secret** is present, click it.
+5. Click the **Close as** dropdown.
+6. Select a radio button that best matches your reason for dismissing the alert.
+7. Click the **Close alert** button.
+
+#### Enable push protection
+
+_Note that push protection is enabled on new public repositories by default. If it is not enabled, follow the steps below._
+
+1. In your GitHub repository, click **Settings** in the navbar.
+2. In the **Security** section in the left sidebar, click **Code Security**.
+3. Next to **Push protection**, click **Enable**.
+
+#### Bypass push protection
+
+1. If you get a secret scanning push protection notification, select a radio button that best matches your reason for bypassing this notification.
+2. Click **Allow secret**.
